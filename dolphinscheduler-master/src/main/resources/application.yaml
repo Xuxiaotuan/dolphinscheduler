@@ -16,7 +16,7 @@
 #
 spring:
   profiles:
-    active: postgresql
+    active: mysql
   banner:
     charset: UTF-8
   jackson:
@@ -76,18 +76,9 @@ scheduler-plugin:
     # hikari:
 
 registry:
-  type: zookeeper
-  zookeeper:
-    namespace: dolphinscheduler
-    connect-string: localhost:2181
-    retry-policy:
-      base-sleep-time: 1s
-      max-sleep: 3s
-      max-retries: 5
-    session-timeout: 60s
-    connection-timeout: 15s
-    block-until-connected: 15s
-    digest: ~
+  type: jdbc
+  heartbeat-refresh-interval: 3s
+  session-timeout: 60s
 
 master:
   listen-port: 5678
@@ -171,9 +162,9 @@ spring:
       on-profile: mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/dolphinscheduler
+    url: jdbc:mysql://100.82.226.63:32372/dolphinscheduler
     username: root
-    password: root
+    password: admin123
   quartz:
     properties:
       org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate

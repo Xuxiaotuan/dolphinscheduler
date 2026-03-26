@@ -15,29 +15,27 @@
 # limitations under the License.
 #
 spring:
+  profiles:
+    active: mysql
   banner:
     charset: UTF-8
   jackson:
     time-zone: UTC
     date-format: "yyyy-MM-dd HH:mm:ss"
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://100.82.226.63:32372/dolphinscheduler
+    username: root
+    password: admin123
+    hikari:
+      connection-test-query: select 1
+      pool-name: DolphinScheduler
   cloud.discovery.client.composite-indicator.enabled: false
 
 registry:
-  type: zookeeper
-  zookeeper:
-    namespace: dolphinscheduler
-    connect-string: localhost:2181
-    retry-policy:
-      base-sleep-time: 1s
-      max-sleep: 3s
-      max-retries: 5
-    session-timeout: 60s
-    connection-timeout: 15s
-    block-until-connected: 15s
-    digest: ~
+  type: jdbc
+  heartbeat-refresh-interval: 3s
+  session-timeout: 60s
 
 worker:
   # worker listener port

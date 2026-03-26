@@ -29,9 +29,9 @@
     <modules>
         <module>dolphinscheduler-dao-api</module>
         <module>dolphinscheduler-dao-plugin-all</module>
-        <module>dolphinscheduler-dao-h2</module>
+<!--        <module>dolphinscheduler-dao-h2</module>-->
         <module>dolphinscheduler-dao-mysql</module>
-        <module>dolphinscheduler-dao-postgresql</module>
+<!--        <module>dolphinscheduler-dao-postgresql</module>-->
     </modules>
 
     <dependencyManagement>
