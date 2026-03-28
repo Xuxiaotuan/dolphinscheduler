@@ -1,0 +1,106 @@
+{
+  "basic_scala_task": {
+    "appName": "test-spark-pi",
+    "applicationType": "Scala",
+    "image": "gcr.io/spark-operator/spark:v3.5.0",
+    "imagePullPolicy": "IfNotPresent",
+    "mainApplicationFile": {
+      "resourceName": "spark-examples.jar"
+    },
+    "mainClass": "org.apache.spark.examples.SparkPi",
+    "arguments": "1000",
+    "sparkVersion": "3.5.0",
+    "namespace": "default",
+    "serviceAccount": "spark",
+    "driverSpec": {
+      "cores": 1,
+      "memory": "512m"
+    },
+    "executorSpec": {
+      "cores": 1,
+      "memory": "512m"
+    },
+    "executorInstances": 1
+  },
+  "pyspark_task": {
+    "appName": "pyspark-wordcount",
+    "applicationType": "Python",
+    "image": "gcr.io/spark-operator/spark-py:v3.5.0",
+    "mainApplicationFile": {
+      "resourceName": "wordcount.py"
+    },
+    "arguments": "/data/input /data/output",
+    "namespace": "default",
+    "executorInstances": 2
+  },
+  "volcano_task": {
+    "appName": "spark-volcano-test",
+    "applicationType": "Scala",
+    "image": "gcr.io/spark-operator/spark:v3.5.0",
+    "mainApplicationFile": {
+      "resourceName": "spark-examples.jar"
+    },
+    "mainClass": "org.apache.spark.examples.SparkPi",
+    "namespace": "default",
+    "batchScheduler": "volcano",
+    "queue": "default",
+    "priorityClassName": "high-priority",
+    "driverSpec": {
+      "cores": 1,
+      "memory": "1g"
+    },
+    "executorSpec": {
+      "cores": 2,
+      "memory": "2g"
+    },
+    "executorInstances": 3
+  },
+  "with_node_selector": {
+    "appName": "spark-node-selector",
+    "applicationType": "Scala",
+    "image": "gcr.io/spark-operator/spark:v3.5.0",
+    "mainApplicationFile": {
+      "resourceName": "spark-examples.jar"
+    },
+    "mainClass": "org.apache.spark.examples.SparkPi",
+    "namespace": "default",
+    "driverSpec": {
+      "cores": 2,
+      "memory": "2g",
+      "nodeSelector": "{\"disktype\": \"ssd\"}",
+      "labels": "{\"team\": \"data-engineering\"}",
+      "annotations": "{\"prometheus.io/scrape\": \"true\"}"
+    },
+    "executorSpec": {
+      "cores": 4,
+      "memory": "4g",
+      "nodeSelector": "{\"disktype\": \"ssd\"}",
+      "labels": "{\"team\": \"data-engineering\"}"
+    },
+    "executorInstances": 5
+  },
+  "with_restart_policy": {
+    "appName": "spark-with-retry",
+    "applicationType": "Scala",
+    "image": "gcr.io/spark-operator/spark:v3.5.0",
+    "mainApplicationFile": {
+      "resourceName": "spark-examples.jar"
+    },
+    "mainClass": "org.apache.spark.examples.SparkPi",
+    "namespace": "default",
+    "restartPolicy": "OnFailure",
+    "ttlSecondsAfterFinished": 3600
+  },
+  "java_task": {
+    "appName": "java-spark-app",
+    "applicationType": "Java",
+    "image": "gcr.io/spark-operator/spark:v3.5.0",
+    "mainApplicationFile": {
+      "resourceName": "my-spark-app.jar"
+    },
+    "mainClass": "com.example.MySparkApp",
+    "arguments": "--config /etc/config.yaml --mode production",
+    "namespace": "default",
+    "executorInstances": 3
+  }
+}

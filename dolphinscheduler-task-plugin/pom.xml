@@ -37,6 +37,7 @@
 <!--        <module>dolphinscheduler-task-mr</module>-->
         <module>dolphinscheduler-task-python</module>
         <module>dolphinscheduler-task-spark</module>
+        <module>dolphinscheduler-task-spark-operator</module>
         <module>dolphinscheduler-task-sql</module>
 <!--        <module>dolphinscheduler-task-sqoop</module>-->
 <!--        <module>dolphinscheduler-task-procedure</module>-->
