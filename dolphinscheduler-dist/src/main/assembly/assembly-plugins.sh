@@ -18,6 +18,9 @@
 set -xeo pipefail
 
 PLUGINS_ASSEMBLY_SKIP=$1
+XXT_HOME_COMPAT=${2:-false}
+DIST_PROJECT_DIR=$(pwd)
+PROJECT_ROOT=$(cd "$DIST_PROJECT_DIR/.." && pwd)
 
 DIST_DIR="$(pwd)/target"
 BIN_TAR_FILE="$DIST_DIR/apache-dolphinscheduler-*-bin.tar.gz"
@@ -76,6 +79,10 @@ done
 
 # create symbolic link for standalone-server
 cd $BIN_DIR/standalone-server && ln -s ../tools/sql/sql sql
+
+if [ "$XXT_HOME_COMPAT" == "true" ]; then
+  bash "$DIST_PROJECT_DIR/src/main/assembly/xxt-home-overlay.sh" "$BIN_DIR" "$PROJECT_ROOT"
+fi
 
 # repack bin tar
 BIN_TAR_FILE_NAME=$(basename $BIN_TAR_FILE)

@@ -114,6 +114,7 @@
                             <arguments>
                                 <argument>src/main/assembly/assembly-plugins.sh</argument>
                                 <argument>${build.plugins.skip}</argument>
+                                <argument>${xxt.home.compat}</argument>
                             </arguments>
                         </configuration>
                     </execution>
