@@ -50,6 +50,7 @@ MYSQL_JAR=$(find_single_artifact \
   'MySQL connector')
 
 mkdir -p "$BIN_DIR/plugins/task-plugins" "$BIN_DIR/plugins/storage-plugins"
+chmod +x "$BIN_DIR/tools/bin/"*.sh
 cp "$SHELL_JAR" "$BIN_DIR/plugins/task-plugins/"
 cp "$S3_JAR" "$BIN_DIR/plugins/storage-plugins/"
 cp "$MYSQL_JAR" "$BIN_DIR/libs/"

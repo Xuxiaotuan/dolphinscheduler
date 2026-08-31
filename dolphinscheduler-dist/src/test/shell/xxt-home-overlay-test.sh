@@ -30,6 +30,7 @@ mkdir -p \
   "$PROJECT_ROOT/dolphinscheduler-task-plugin/dolphinscheduler-task-shell/target" \
   "$PROJECT_ROOT/dolphinscheduler-storage-plugin/dolphinscheduler-storage-s3/target" \
   "$PROJECT_ROOT/dolphinscheduler-tools/target/tools/libs" \
+  "$BIN_DIR/tools/bin" \
   "$BIN_DIR/libs"
 
 for module in api-server master-server worker-server alert-server tools; do
@@ -39,12 +40,15 @@ done
 touch "$PROJECT_ROOT/dolphinscheduler-task-plugin/dolphinscheduler-task-shell/target/dolphinscheduler-task-shell-3.4.2-shade.jar"
 touch "$PROJECT_ROOT/dolphinscheduler-storage-plugin/dolphinscheduler-storage-s3/target/dolphinscheduler-storage-s3-3.4.2-shade.jar"
 touch "$MYSQL_JAR"
+touch "$BIN_DIR/tools/bin/upgrade-schema.sh"
+chmod 0644 "$BIN_DIR/tools/bin/upgrade-schema.sh"
 
 bash "$OVERLAY_SCRIPT" "$BIN_DIR" "$PROJECT_ROOT"
 
 test -f "$BIN_DIR/plugins/task-plugins/dolphinscheduler-task-shell-3.4.2-shade.jar"
 test -f "$BIN_DIR/plugins/storage-plugins/dolphinscheduler-storage-s3-3.4.2-shade.jar"
 test -f "$BIN_DIR/libs/mysql-connector-j-8.0.33.jar"
+test -x "$BIN_DIR/tools/bin/upgrade-schema.sh"
 
 for module in api-server master-server worker-server alert-server tools; do
   test "$(readlink "$BIN_DIR/$module/libs/mysql-connector-j-8.0.33.jar")" = "../../libs/mysql-connector-j-8.0.33.jar"
