@@ -98,6 +98,7 @@
         <build.ui.skip>true</build.ui.skip>
         <build.plugins.skip>false</build.plugins.skip>
         <xxt.home.compat>false</xxt.home.compat>
+        <mysql.connector.scope>test</mysql.connector.scope>
         <build.assembly.skip>true</build.assembly.skip>
         <spotless.skip>false</spotless.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -836,6 +837,7 @@
             <id>xxt-home</id>
             <properties>
                 <xxt.home.compat>true</xxt.home.compat>
+                <mysql.connector.scope>runtime</mysql.connector.scope>
             </properties>
         </profile>
         <profile>
