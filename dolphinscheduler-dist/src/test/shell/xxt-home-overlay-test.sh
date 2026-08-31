@@ -30,8 +30,6 @@ mkdir -p \
   "$PROJECT_ROOT/dolphinscheduler-task-plugin/dolphinscheduler-task-shell/target" \
   "$PROJECT_ROOT/dolphinscheduler-storage-plugin/dolphinscheduler-storage-s3/target" \
   "$PROJECT_ROOT/dolphinscheduler-tools/target/tools/libs" \
-  "$BIN_DIR/plugins/task-plugins" \
-  "$BIN_DIR/plugins/storage-plugins" \
   "$BIN_DIR/libs"
 
 for module in api-server master-server worker-server alert-server tools; do

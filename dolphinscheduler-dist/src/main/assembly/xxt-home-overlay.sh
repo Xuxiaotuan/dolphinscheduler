@@ -49,6 +49,7 @@ MYSQL_JAR=$(find_single_artifact \
   'mysql-connector-j-*.jar' \
   'MySQL connector')
 
+mkdir -p "$BIN_DIR/plugins/task-plugins" "$BIN_DIR/plugins/storage-plugins"
 cp "$SHELL_JAR" "$BIN_DIR/plugins/task-plugins/"
 cp "$S3_JAR" "$BIN_DIR/plugins/storage-plugins/"
 cp "$MYSQL_JAR" "$BIN_DIR/libs/"
