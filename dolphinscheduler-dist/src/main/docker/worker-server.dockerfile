@@ -22,7 +22,7 @@ ENV TZ=Asia/Shanghai
 ENV DOLPHINSCHEDULER_HOME=/opt/dolphinscheduler
 
 RUN apt update ; \
-    apt install -y --no-install-recommends sudo openssh-client ca-certificates ; \
+    apt install -y --no-install-recommends sudo openssh-client ca-certificates python3 ; \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR $DOLPHINSCHEDULER_HOME
