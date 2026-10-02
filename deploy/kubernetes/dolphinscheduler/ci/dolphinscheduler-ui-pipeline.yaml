@@ -95,7 +95,7 @@ spec:
                     set -eu
                     echo "$HARBOR_CREDENTIAL_PSW" | docker login "$REGISTRY" -u "$HARBOR_CREDENTIAL_USR" --password-stdin
                     image="$REGISTRY/$HARBOR_NAMESPACE/dolphinscheduler-$SERVICE"
-                    docker build --platform linux/amd64 -f dolphinscheduler-ui/ui.dockerfile -t "$image:$IMAGE_TAG" -t "$image:$MOVING_TAG" .
+                    docker build --platform linux/amd64 -f dolphinscheduler-ui/ui.dockerfile -t "$image:$IMAGE_TAG" -t "$image:$MOVING_TAG" dolphinscheduler-ui
                     docker push "$image:$IMAGE_TAG"
                     docker push "$image:$MOVING_TAG"
                   '''
