@@ -45,23 +45,13 @@ spec:
         stages {
           stage('Source') {
             steps {
-              deleteDir()
-              checkout([
-                $class: 'GitSCM',
-                branches: [[name: "*/${SOURCE_BRANCH}"]],
-                extensions: [[
-                  $class: 'CloneOption',
-                  depth: 1,
-                  honorRefspec: true,
-                  noTags: true,
-                  shallow: true,
-                  timeout: 30
-                ]],
-                userRemoteConfigs: [[
-                  refspec: "+refs/heads/${SOURCE_BRANCH}:refs/remotes/origin/${SOURCE_BRANCH}",
-                  url: 'https://github.com/Xuxiaotuan/dolphinscheduler.git'
-                ]]
-              ])
+              container('maven') {
+                deleteDir()
+                sh '''
+                  set -eu
+                  git clone --depth 1 --branch "$SOURCE_BRANCH" https://github.com/Xuxiaotuan/dolphinscheduler.git .
+                '''
+              }
             }
           }
 
