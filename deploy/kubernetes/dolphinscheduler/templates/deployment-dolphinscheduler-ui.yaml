@@ -1,0 +1,83 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+{{- if .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dolphinscheduler.fullname" . }}-ui
+  labels:
+    {{- include "dolphinscheduler.ui.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicas }}
+  selector:
+    matchLabels:
+      {{- include "dolphinscheduler.ui.labels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "dolphinscheduler.ui.labels" . | nindent 8 }}
+    spec:
+      {{- if .Values.ui.affinity }}
+      affinity:
+        {{- toYaml .Values.ui.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.ui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.ui.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.ui.tolerations }}
+      tolerations:
+        {{- toYaml .Values.ui.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.ui.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.ui.image.pullSecret }}
+      {{- end }}
+      containers:
+        - name: {{ include "dolphinscheduler.fullname" . }}-ui
+          image: {{ include "dolphinscheduler.image.fullname.ui" . }}
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            {{- toYaml .Values.ui.resources | nindent 12 }}
+          {{- if .Values.ui.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /dolphinscheduler/ui/
+              port: http
+            initialDelaySeconds: {{ .Values.ui.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ui.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.ui.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.ui.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.ui.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.ui.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /dolphinscheduler/ui/
+              port: http
+            initialDelaySeconds: {{ .Values.ui.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ui.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.ui.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.ui.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.ui.readinessProbe.failureThreshold }}
+          {{- end }}
+{{- end }}

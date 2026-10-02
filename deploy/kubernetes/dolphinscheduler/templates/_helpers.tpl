@@ -44,6 +44,9 @@ Create default docker images' fullname.
 {{- define "dolphinscheduler.image.fullname.tools" -}}
 {{- .Values.image.registry }}/{{ .Values.image.tools }}:{{ .Values.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
+{{- define "dolphinscheduler.image.fullname.ui" -}}
+{{- .Values.ui.image.registry }}/{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
 
 {{/*
 Create a default common labels.
@@ -86,6 +89,15 @@ Create an api labels.
 {{- define "dolphinscheduler.api.labels" -}}
 app.kubernetes.io/name: {{ include "dolphinscheduler.fullname" . }}-api
 app.kubernetes.io/component: api
+{{ include "dolphinscheduler.common.labels" . }}
+{{- end -}}
+
+{{/*
+Create standalone UI labels.
+*/}}
+{{- define "dolphinscheduler.ui.labels" -}}
+app.kubernetes.io/name: {{ include "dolphinscheduler.fullname" . }}-ui
+app.kubernetes.io/component: ui
 {{ include "dolphinscheduler.common.labels" . }}
 {{- end -}}
 

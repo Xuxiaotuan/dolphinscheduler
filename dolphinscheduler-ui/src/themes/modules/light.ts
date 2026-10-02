@@ -16,19 +16,31 @@
  */
 const light = {
   common: {
-    bodyColor: '#f8f8fc',
+    baseColor: '#ffffff',
+    bodyColor: '#f5f7fa',
+    cardColor: '#ffffff',
+    tableColor: '#ffffff',
+    tableHeaderColor: '#f7f9fc',
+    tableColorHover: '#edf3ff',
+    hoverColor: '#edf3ff',
+    textColorBase: '#172033',
+    textColor1: '#172033',
+    textColor2: '#334155',
+    textColor3: '#647087',
+    dividerColor: '#d7dee8',
+    borderColor: '#b8c4d4',
 
     /**************** Brand color */
-    primaryColor: '#1890ff',
-    primaryColorHover: '#40a9ff',
-    primaryColorPressed: '#096dd9',
-    primaryColorSuppl: '#1890ff',
+    primaryColor: '#2457d6',
+    primaryColorHover: '#3568e3',
+    primaryColorPressed: '#173c9d',
+    primaryColorSuppl: '#2457d6',
 
     /**************** Function of color */
-    infoColor: '#1890ff',
-    successColor: '#52c41a',
-    warningColor: '#faad14',
-    errorColor: '#ff4d4f'
+    infoColor: '#2457d6',
+    successColor: '#16734c',
+    warningColor: '#9a6700',
+    errorColor: '#b42318'
   }
 }
 

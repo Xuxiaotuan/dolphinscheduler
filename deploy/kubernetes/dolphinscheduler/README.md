@@ -8,6 +8,19 @@ This chart bootstraps all the components needed to run Apache DolphinScheduler o
 
 Please refer to the [Quick Start in Kubernetes](../../../docs/docs/en/guide/installation/kubernetes.md)
 
+## Standalone Web UI
+
+The chart can deploy the Web UI as an independent Nginx workload. The UI serves
+`/dolphinscheduler/ui/` and reverse-proxies `/dolphinscheduler/` to the existing
+API Service named `dolphinscheduler-api` in the same namespace.
+
+Set `ui.enabled=true` and provide `ui.image.registry`, `ui.image.repository`,
+and `ui.image.tag`. The default NodePort is `31364`; the API service keeps its
+own API and Python NodePorts.
+
+The standalone UI is intentionally stateless and does not mount any API logs,
+configuration, or shared-storage volumes.
+
 ## Values
 
 | Key | Type | Default | Description |

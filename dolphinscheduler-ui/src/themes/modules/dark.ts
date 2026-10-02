@@ -17,20 +17,31 @@
 
 const dark = {
   common: {
-    bodyColor: '#141414',
-    baseColor: '#f8f8fc',
+    baseColor: '#f8fafc',
+    bodyColor: '#111827',
+    cardColor: '#1f2937',
+    tableColor: '#1f2937',
+    tableHeaderColor: '#273449',
+    tableColorHover: '#263d72',
+    hoverColor: '#263d72',
+    textColorBase: '#f8fafc',
+    textColor1: '#f8fafc',
+    textColor2: '#d1d9e6',
+    textColor3: '#9aa8bd',
+    dividerColor: '#374151',
+    borderColor: '#4b5563',
 
     /**************** Brand color */
-    primaryColor: '#177ddc',
-    primaryColorHover: '#1765ad',
-    primaryColorPressed: '#3c9ae8',
-    primaryColorSuppl: '#177ddc',
+    primaryColor: '#4f7ff0',
+    primaryColorHover: '#6f98ff',
+    primaryColorPressed: '#2d5fcc',
+    primaryColorSuppl: '#4f7ff0',
 
     /**************** Function of color */
-    infoColor: '#177ddc',
-    successColor: '#49aa19',
-    warningColor: '#d89614',
-    errorColor: '#a61d24'
+    infoColor: '#4f7ff0',
+    successColor: '#4cc38a',
+    warningColor: '#d6a84f',
+    errorColor: '#f2766a'
   }
 }
 

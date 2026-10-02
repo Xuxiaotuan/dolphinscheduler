@@ -1058,6 +1058,58 @@ api:
     #  other: []
 
 
+ui:
+  # -- Enable or disable the standalone Web UI component
+  enabled: true
+  # -- Number of desired UI pods
+  replicas: 1
+  # -- UI image settings are independent from the API image
+  image:
+    registry: apache
+    repository: dolphinscheduler-ui
+    tag: 3.4.2
+    pullPolicy: "IfNotPresent"
+    pullSecret: ""
+  # -- Affinity is a group of scheduling rules for the UI pod
+  affinity: { }
+  # -- Node selector for the UI pod
+  nodeSelector: { }
+  # -- Tolerations for the UI pod
+  tolerations: [ ]
+  # -- Compute resources required by the UI container
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
+  # -- HTTP liveness probe settings
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+  # -- HTTP readiness probe settings
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+  service:
+    # -- Service type used to expose the standalone UI
+    type: "NodePort"
+    # -- Service port for the Nginx UI container
+    port: 8080
+    # -- NodePort for the standalone UI
+    nodePort: 31364
+    annotations: { }
+
+
 ingress:
   # -- Enable ingress
   enabled: false

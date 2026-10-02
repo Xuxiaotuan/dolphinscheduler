@@ -1,0 +1,140 @@
+apiVersion: devops.kubesphere.io/v1alpha3
+kind: Pipeline
+metadata:
+  name: dolphinscheduler-ui
+  namespace: bigdata-lab-devops845xv
+spec:
+  type: pipeline
+  pipeline:
+    name: dolphinscheduler-ui
+    discarder:
+      days_to_keep: "7"
+      num_to_keep: "10"
+    jenkinsfile: |-
+      pipeline {
+        agent {
+          kubernetes {
+            inheritFrom 'maven'
+            containerTemplate {
+              name 'maven'
+              image 'maven:3.9.10-sapmachine-17'
+              privileged true
+            }
+          }
+        }
+
+        options {
+          skipDefaultCheckout(true)
+          disableConcurrentBuilds()
+          timeout(time: 90, unit: 'MINUTES')
+        }
+
+        environment {
+          REGISTRY = '100.97.53.78:5001'
+          HARBOR_NAMESPACE = 'xxt'
+          SOURCE_BRANCH = 'codex/xxt-3.4.2-home'
+          SERVICE = 'ui'
+          MOVING_TAG = 'xxt-3.4.2-home-ui-latest'
+          MAVEN_OPTS = '-Xmx6g -XX:+UseG1GC'
+        }
+
+        stages {
+          stage('Source') {
+            steps {
+              deleteDir()
+              checkout([
+                $class: 'GitSCM',
+                branches: [[name: "*/${SOURCE_BRANCH}"]],
+                extensions: [[
+                  $class: 'CloneOption',
+                  depth: 1,
+                  honorRefspec: true,
+                  noTags: true,
+                  shallow: true,
+                  timeout: 30
+                ]],
+                userRemoteConfigs: [[
+                  credentialsId: 'xxt-github',
+                  refspec: "+refs/heads/${SOURCE_BRANCH}:refs/remotes/origin/${SOURCE_BRANCH}",
+                  url: 'git@github.com:Xuxiaotuan/dolphinscheduler.git'
+                ]]
+              ])
+            }
+          }
+
+          stage('Metadata') {
+            steps {
+              container('maven') {
+                script {
+                  sh 'git config --global --add safe.directory "$WORKSPACE"'
+                  env.GIT_SHORT = sh(script: 'git rev-parse --short=12 HEAD', returnStdout: true).trim()
+                  env.PROJECT_VERSION = sh(script: "mvn -q -N help:evaluate -Dexpression=project.version -DforceStdout", returnStdout: true).trim()
+                  env.IMAGE_TAG = "xxt-3.4.2-home-b${env.BUILD_NUMBER}-${env.GIT_SHORT}"
+                  echo "Service: ${env.SERVICE}"
+                  echo "Git commit: ${env.GIT_SHORT}"
+                  echo "Image tag: ${env.IMAGE_TAG}"
+                }
+              }
+            }
+          }
+
+          stage('Package UI') {
+            steps {
+              container('maven') {
+                sh 'mvn -B -pl dolphinscheduler-ui -am package -Prelease,xxt-home -DskipTests -Dspotless.skip=true'
+                sh 'test -s dolphinscheduler-ui/dist/index.html'
+              }
+            }
+          }
+
+          stage('Docker Push') {
+            steps {
+              container('maven') {
+                withCredentials([usernamePassword(credentialsId: 'xxt-harbor', usernameVariable: 'HARBOR_CREDENTIAL_USR', passwordVariable: 'HARBOR_CREDENTIAL_PSW')]) {
+                  sh '''
+                    set -eu
+                    echo "$HARBOR_CREDENTIAL_PSW" | docker login "$REGISTRY" -u "$HARBOR_CREDENTIAL_USR" --password-stdin
+                    image="$REGISTRY/$HARBOR_NAMESPACE/dolphinscheduler-$SERVICE"
+                    docker build --platform linux/amd64 -f dolphinscheduler-ui/ui.dockerfile -t "$image:$IMAGE_TAG" -t "$image:$MOVING_TAG" .
+                    docker push "$image:$IMAGE_TAG"
+                    docker push "$image:$MOVING_TAG"
+                  '''
+                }
+              }
+            }
+          }
+
+          stage('Manifest') {
+            steps {
+              container('maven') {
+                sh '''
+                  {
+                    echo "repository=git@github.com:Xuxiaotuan/dolphinscheduler.git"
+                    echo "branch=$SOURCE_BRANCH"
+                    echo "commit=$GIT_SHORT"
+                    echo "service=$SERVICE"
+                    echo "pom_version=$PROJECT_VERSION"
+                    echo "immutable_tag=$IMAGE_TAG"
+                    echo "image=$REGISTRY/$HARBOR_NAMESPACE/dolphinscheduler-$SERVICE:$IMAGE_TAG"
+                  } > build-manifest.txt
+                '''
+                archiveArtifacts artifacts: 'build-manifest.txt', fingerprint: true
+              }
+            }
+          }
+        }
+
+        post {
+          success {
+            echo "DolphinScheduler $SERVICE image built and pushed. Kubernetes deployment is updated separately after verification."
+          }
+          failure {
+            echo "DolphinScheduler $SERVICE build failed; current deployment remains unchanged."
+          }
+          always {
+            container('maven') {
+              sh 'docker logout "$REGISTRY" >/dev/null 2>&1 || true'
+            }
+          }
+        }
+      }
