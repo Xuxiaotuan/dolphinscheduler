@@ -15,7 +15,8 @@ The chart can deploy the Web UI as an independent Nginx workload. The UI serves
 API Service named `dolphinscheduler-api` in the same namespace.
 
 Set `ui.enabled=true` and provide `ui.image.registry`, `ui.image.repository`,
-and `ui.image.tag`. The default NodePort is `31364`; the API service keeps its
+and `ui.image.tag`. The default NodePort is `31372` because `31364` is already
+occupied by the existing Trino service; the API service keeps its
 own API and Python NodePorts.
 
 The standalone UI is intentionally stateless and does not mount any API logs,

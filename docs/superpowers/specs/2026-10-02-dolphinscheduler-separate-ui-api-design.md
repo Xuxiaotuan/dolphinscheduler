@@ -18,7 +18,7 @@
 ```text
 Browser
   │
-  │ http://100.82.226.63:31364/dolphinscheduler/ui/
+  │ http://100.82.226.63:31372/dolphinscheduler/ui/
   ▼
 dolphinscheduler-ui Deployment
   └─ Nginx
@@ -45,7 +45,7 @@ dolphinscheduler-api Deployment
 - 保留前端构建的 `/dolphinscheduler/ui/` base path。
 - 将 `/dolphinscheduler/` 反向代理到 Kubernetes 内部 API Service。
 - 为前端路由提供 SPA fallback。
-- UI 使用独立 Deployment 和 NodePort `31364`。
+- UI 使用独立 Deployment 和 NodePort `31372`；`31364` 已被现有 Trino Service 占用。
 
 ### Helm
 
@@ -69,7 +69,7 @@ dolphinscheduler-api Deployment
 ## 验收标准
 
 - UI Deployment 和 API Deployment 分别存在，且 Pod 均 Ready。
-- `http://100.82.226.63:31364/dolphinscheduler/ui/` 返回 200。
+- `http://100.82.226.63:31372/dolphinscheduler/ui/` 返回 200。
 - UI 静态资源可以加载，浏览器请求 `/dolphinscheduler/` 能通过 UI Nginx 到达 API。
 - `http://100.82.226.63:31362/dolphinscheduler/actuator/health/liveness` 返回 200。
 - API 镜像内不存在 UI 静态文件，且 API 启动脚本存在。

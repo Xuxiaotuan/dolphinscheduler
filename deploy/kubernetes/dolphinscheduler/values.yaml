@@ -1106,7 +1106,7 @@ ui:
     # -- Service port for the Nginx UI container
     port: 8080
     # -- NodePort for the standalone UI
-    nodePort: 31364
+    nodePort: 31372
     annotations: { }
 
 
