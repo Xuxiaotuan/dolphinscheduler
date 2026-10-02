@@ -54,9 +54,8 @@ spec:
                   timeout: 30
                 ]],
                 userRemoteConfigs: [[
-                  credentialsId: 'xxt-github',
                   refspec: "+refs/heads/${SOURCE_BRANCH}:refs/remotes/origin/${SOURCE_BRANCH}",
-                  url: 'git@github.com:Xuxiaotuan/dolphinscheduler.git'
+                  url: 'https://github.com/Xuxiaotuan/dolphinscheduler.git'
                 ]]
               ])
             }
