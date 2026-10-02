@@ -36,6 +36,10 @@ spec:
           SERVICE = 'ui'
           MOVING_TAG = 'xxt-3.4.2-home-ui-latest'
           MAVEN_OPTS = '-Xmx6g -XX:+UseG1GC'
+          HTTPS_PROXY = 'http://100.95.135.45:7890'
+          HTTP_PROXY = 'http://100.95.135.45:7890'
+          ALL_PROXY = 'socks5://100.95.135.45:7890'
+          NO_PROXY = '100.97.53.78,100.82.226.63,localhost,127.0.0.1'
         }
 
         stages {
